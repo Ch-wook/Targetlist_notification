@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.studyfocus.data.AppDatabase
-import com.example.studyfocus.data.TaskRepository
+import com.example.studyfocus.data.DataRepository
 import kotlinx.coroutines.flow.first
 import java.util.*
 
@@ -15,7 +15,7 @@ class NotificationWorker(
 
     override suspend fun doWork(): Result {
         val database = AppDatabase.getDatabase(applicationContext)
-        val repository = TaskRepository(database.taskDao())
+        val repository = DataRepository(database.taskDao(), database.goalDao())
         
         val tasks = repository.getTodayTasks().first()
         if (tasks.isNotEmpty()) {
